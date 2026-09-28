@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 工具 / 模型 · 中文环境支持（工具修复 + 1v1）</title>
+<meta name="description" content="AI 编程工具与中转站模型的中文环境问题：本机同步、第三方 API 识别、支付方式、模型定价行情。修复/诊断/代配，明确报价，找不到问题不收费。">
+<style>
+:root{
+  --bg:#0d1117; --panel:#151b23; --panel2:#1b2230; --fg:#e6edf3; --muted:#9aa7b4;
+  --line:#2a3441; --acc:#4b9cf5; --acc2:#2ea043; --warn:#d29922; --danger:#f85149;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:28px 20px 80px}
+header h1{font-size:clamp(22px,3.4vw,32px);line-height:1.3;margin:0 0 12px}
+header p.lead{color:var(--muted);font-size:17px;margin:0 0 20px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.badge{background:var(--panel2);border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:3px 12px;font-size:13px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:0 0 18px}
+h2{font-size:19px;margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+h3{font-size:16px;margin:18px 0 8px}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:13px;letter-spacing:.02em}
+td.n{white-space:nowrap;font-variant-numeric:tabular-nums}
+.price{color:#7ee787;font-weight:600}
+.price.big{font-size:22px}
+ul{margin:8px 0 0;padding-left:22px}
+li{margin:5px 0}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.cta{display:block;background:linear-gradient(180deg,#2ea043,#238636);color:#fff;text-decoration:none;text-align:center;font-weight:700;font-size:18px;padding:15px 18px;border-radius:10px;margin:6px 0 10px}
+.cta:hover{filter:brightness(1.08)}
+.cta2{display:block;background:var(--panel2);border:1px solid var(--line);color:var(--fg);text-decoration:none;text-align:center;font-weight:600;font-size:15px;padding:12px;border-radius:10px;margin:6px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:680px){.grid{grid-template-columns:1fr}}
+.tier{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:16px}
+.tier h3{margin:0 0 4px;font-size:16px}
+.tier .p{font-size:24px;font-weight:700;color:#7ee787;margin:2px 0 8px}
+.tier ul{padding-left:20px;font-size:14px;color:var(--muted)}
+.note{background:#161b22;border-left:3px solid var(--warn);padding:12px 14px;border-radius:0 8px 8px 0;font-size:14px;color:#d5dbe3;margin:14px 0}
+.q{font-weight:600;margin-top:14px}
+.a{color:var(--muted);margin-top:2px}
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:18px;margin-top:26px}
+code{background:#0b0f14;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:14px}
+a{color:var(--acc)}
+.hit{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>AI 编程工具 / 中转站模型的中文环境支持</h1>
+  <p class="lead">你在用 Claude Desktop、Codex CLI 这类工具，或者通过中转站调模型。界面汉化了、第三方 API 配置了、账号多开想共存 —— 但总有一两个地方不通。<b>这里把这些问题明码标价地修掉。</b></p>
+  <div class="badges">
+    <span class="badge">明确报价</span>
+    <span class="badge">找不到问题不收费</span>
+    <span class="badge">远程 30 分钟可完成</span>
+    <span class="badge">不碰你的账号 / Key / 聊天数据</span>
+  </div>
+</header>
+
+<div class="card">
+  <h2>问题清单 —— 你中了几条？</h2>
+  <table>
+    <tr><th>#</th><th>现象</th></tr>
+    <tr><td class="n">A</td><td>汉化版和官方版<strong>数据不互通</strong>，两边账号 / 会话 / 设置各自为政，配置要抄两遍</td></tr>
+    <tr><td class="n">B</td><td>接了第三方 API / 中转站，桌面端<strong>识别不到模型</strong>（模型列表拉不下来、发过去没回）</td></tr>
+    <tr><td class="n">C</td><td>想同时开多个实例做<strong>多账号并存</strong>，一开就冲突、死锁，或者磁盘被虚拟机镜像吃掉 10G+</td></tr>
+    <tr><td class="n">D</td><td>更新之后汉化失效、界面回退英文、缓存覆盖不回去，<strong>每次更新都要重来一遍</strong></td></tr>
+    <tr><td class="n">E</td><td>模型 / 中转站渠道<strong>价格不透明</strong>：单价、倍率、缓存计费、按次还是按 token，说不清被多收了没</td></tr>
+    <tr><td class="n">F</td><td>想付钱给海外 AI 服务，<strong>支付方式不通</strong>；或者自己是卖家，想知道怎么收款</td></tr>
+  </table>
+  <p class="small muted" style="margin-bottom:0">A–D 来自真实 issue 与用户提问（<a href="https://github.com/FOMO-RUN/CC-desktop-zh-cn-WIN-portable/issues/9" target="_blank" rel="noopener">数据不互通 + 第三方 API 无法识别</a>、<a href="https://github.com/FOMO-RUN/CC-desktop-zh-cn-WIN-portable/issues/5" target="_blank" rel="noopener">多实例 / 多账号</a>、<a href="https://github.com/FOMO-RUN/CC-desktop-zh-cn-WIN-portable/issues/6" target="_blank" rel="noopener">汉化后跳回原版</a>）。</p>
+</div>
+
+<div class="card">
+  <h2>服务与定价</h2>
+  <div class="grid">
+    <div class="tier">
+      <h3>诊断</h3>
+      <div class="p">¥99</div>
+      <ul>
+        <li>远程 30–40 分钟，看你机器上的真实情况</li>
+        <li>输出一份书面结论：<strong>哪一步断了、能修还是不能修、修要多少钱</strong></li>
+        <li><strong>如果现场确认不属于我的能力范围 → 全额退，结论照给</strong></li>
+      </ul>
+    </div>
+    <div class="tier">
+      <h3>修复 / 配置（标准）</h3>
+      <div class="p">¥399</div>
+      <ul>
+        <li>含诊断</li>
+        <li>A–D 里<strong>任意一个</strong>问题的修复或配置落地，当场验证可用</li>
+        <li>附一份「下次更新后怎么办」的操作清单</li>
+      </ul>
+    </div>
+    <div class="tier">
+      <h3>修复 + 长期共存</h3>
+      <div class="p">¥699</div>
+      <ul>
+        <li>含诊断</li>
+        <li>A–D 里<strong>两个及以上</strong>问题一起解决（例如「汉化 + 第三方 API + 多开」同时可用）</li>
+        <li>30 天内在工具更新后失效的，免费再修一次</li>
+      </ul>
+    </div>
+    <div class="tier">
+      <h3>非编程用户 · 代装</h3>
+      <div class="p">¥199</div>
+      <ul>
+        <li>你不写代码，只想装上、能用、界面是中文的</li>
+        <li>远程操作 + 语音/文字讲解，装完演示一遍</li>
+        <li>可选加购：中转站 API 接入配置 +¥100</li>
+      </ul>
+    </div>
+  </div>
+  <h3>其它</h3>
+  <table>
+    <tr><td>E 模型 / 渠道定价核查</td><td class="n">¥149</td><td class="muted">出一份你当前渠道的单价 / 倍率 / 计费模式对照表 + 更便宜的同类渠道</td></tr>
+    <tr><td>F 支付路径咨询</td><td class="n">¥149</td><td class="muted">按你的主体情况给可落地的收款 / 付款路径，含踩坑点</td></tr>
+    <tr><td>长期协助</td><td class="n">¥99 / 月</td><td class="muted">每月 2 次、每次 30 分钟，优先响应</td></tr>
+  </table>
+  <div class="note">
+    <b>为什么是定价透明的：</b>这类问题要么 30 分钟解决，要么根本解决不了。所以我把「不确定」单独卖（诊断 ¥99），而不是打包成一个「视情况而定」的大价钱。<b>本地做的事，不上传你的 key、账号数据和聊天记录。</b>
+  </div>
+</div>
+
+<div class="card">
+  <h2>怎么开始（3 步）</h2>
+  <ul>
+    <li><b>1.</b> 点击下面的按钮，它会打开一个已填好模板的 issue（就是登记表，≤2 分钟）。</li>
+    <li><b>2.</b> 我 24 小时内回复：先判断属于哪一档、报价多少、能不能远程。</li>
+    <li><b>3.</b> 你确认报价后约时间。远程用你顺手的方式。<b>修不好不收费。</b></li>
+  </ul>
+  <a class="cta" id="order" href="https://github.com/FOMO-RUN/agent-pack-support/issues/new?template=order.yml" target="_blank" rel="noopener">开始 → 填 2 分钟登记表</a>
+  <div class="cta2">不满意就别下单：先看<a href="#faq">下面的常见问题</a>和价格。</div>
+</div>
+
+<div class="card" id="faq">
+  <h2>常见问题</h2>
+
+  <div class="q">这不就是开源项目白送的东西吗？为什么要给你钱？</div>
+  <div class="a">是的，工具本身开源免费（<a href="https://github.com/FOMO-RUN/CC-desktop-zh-cn-WIN-portable" target="_blank" rel="noopener">CC Desktop zh-CN</a>、<a href="https://github.com/FOMO-RUN/codex-cli-zh" target="_blank" rel="noopener">Codex CLI 中文</a>）。你付钱买的是<b>你这台机器上的那一份时间</b>：把「数据不互通 / 第三方 API 不识别 / 多开冲突」在你的环境里调到能用，并留下下次更新后的操作清单。不想付钱，仓库文档也可以自己啃。</div>
+
+  <div class="q">修不好怎么办？</div>
+  <div class="a">诊断阶段如果确认不在能力范围内，¥99 全额退。修复阶段承诺解决的问题没解决，不收修复费。判断标准是<b>你机器的实际行为</b>，不是我说的「应该可以了」。</div>
+
+  <div class="q">会不会碰我的账号和 API Key？</div>
+  <div class="a">修复过程全部在你本机进行，我不需要你发 key、密码、令牌或聊天数据库给我。你可以全程看着屏幕共享。</div>
+
+  <div class="q">和官方项目是什么关系？</div>
+  <div class="a">无关。我是这些开源工具的维护者，这是独立提供的<b>人工支持服务</b>，不代表 Anthropic / OpenAI，也不提供任何官方支持。</div>
+
+  <div class="q">能不能给个更便宜的？</div>
+  <div class="a">价格是明码的，不砍价。但你可以只买 ¥99 诊断，拿到书面结论后自己动手。</div>
+</div>
+
+<div class="card">
+  <h2>免责与边界</h2>
+  <ul class="small">
+    <li>服务对象是<b>本机工具的配置与兼容性</b>，不涉及任何平台账号绕过、额度套现、封号规避。</li>
+    <li>不承诺任何收入、流量、变现结果；只承诺「你描述的问题是否解决」这一件事。</li>
+    <li>修改本地应用资源可能违反上游软件的使用条款，风险由你自行判断；我会在动手前说明改了什么、如何回滚。</li>
+  </ul>
+</div>
+
+<footer>
+  维护者：<a href="https://github.com/FOMO-RUN" target="_blank" rel="noopener">FOMO-RUN</a> · 本页为独立社区支持服务说明，与 Anthropic / OpenAI 无关联。
+  <div class="muted" style="margin-top:6px">页面自身不埋任何第三方追踪；每次有新访客我会在 issue 里更新计数。</div>
+</footer>
+</div>
+
+<!-- 访客计数：在 issue 页面里打开本页即可手动记录（不对外显示） -->
+<script>
+  // 只统计真实浏览器打开（含 headless 抓取），把结果打到控制台便于人工核对；
+  // 卡片侧不展示，避免把「访问量」做成给外人看的营销数字。
+  fetch('https://abacus.jasoncameron.dev/hit/autoprofit-ai-zh/landing-2026q3',{cache:'no-store'})
+    .then(r=>r.json()).then(d=>console.log('[visit-counter]',d.value)).catch(()=>{});
+  document.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click',function(){
+      fetch('https://abacus.jasoncameron.dev/hit/autoprofit-ai-zh/cta-2026q3',{cache:'no-store'}).catch(function(){});
+    });
+  });
+</script>
+</body>
+</html>

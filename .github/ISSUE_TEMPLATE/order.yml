@@ -1,0 +1,62 @@
+name: 购买 / 咨询登记
+description: 登记你的问题与预算档位，24 小时内回复报价
+title: "[登记] "
+labels: ["order"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        填表 ≤2 分钟。24 小时内回复：属于哪一档、报价多少、能不能远程。
+        **不要在这里粘贴 API Key / 密码 / 令牌 / 聊天数据**，我修复时不需要这些。
+  - type: dropdown
+    id: problem
+    attributes:
+      label: 你遇到的是哪一类问题
+      options:
+        - A 汉化版与官方版数据不互通
+        - B 第三方 API / 中转站识别不到模型
+        - C 多实例多账号冲突 / 占盘太大
+        - D 更新后汉化失效
+        - E 模型 / 渠道定价核查
+        - F 支付方式（付款或收款）
+        - 其它（在下面描述）
+    validations:
+      required: true
+  - type: textarea
+    id: detail
+    attributes:
+      label: 具体情况
+      description: 工具名称与版本、系统版本、报错原文或截图链接、你试过什么
+      placeholder: |
+        例：CC Desktop 汉化版 v0.3.10 + 官方版共存，Windows 11。
+        汉化版里填了中转站 base_url 和 key，模型列表空，发消息无响应。
+        试过换 base_url、重启、重装，都一样。
+    validations:
+      required: true
+  - type: dropdown
+    id: tier
+    attributes:
+      label: 你想要的档位
+      options:
+        - 诊断 ¥99（先定位，再决定）
+        - 修复 / 配置 ¥399
+        - 修复 + 长期共存 ¥699
+        - 非编程用户 代装 ¥199
+        - 定价核查 / 支付咨询 ¥149
+        - 还没定，先问
+    validations:
+      required: true
+  - type: input
+    id: contact
+    attributes:
+      label: 联系方式
+      description: 微信 / 邮箱 / 其它能联系到你的方式（只用于沟通本次服务）
+    validations:
+      required: true
+  - type: checkboxes
+    id: agree
+    attributes:
+      label: 确认
+      options:
+        - label: 我理解这是独立社区支持服务，与 Anthropic / OpenAI 无关联，不承诺任何收入或变现结果
+          required: true
